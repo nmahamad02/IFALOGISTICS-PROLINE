@@ -1,0 +1,21 @@
+# dependencies
+/node_modules
+
+# Angular build output
+/dist
+/tmp
+/out-tsc
+
+# Angular cache
+.angular/cache
+
+# IDEs and editors
+.vscode
+.idea
+*.swp
+
+# system files
+.DS_Store
+
+# coverage reports
+/coverage
