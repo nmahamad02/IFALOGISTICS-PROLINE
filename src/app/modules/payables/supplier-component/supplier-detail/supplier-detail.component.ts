@@ -351,9 +351,9 @@ export class SupplierDetailComponent {
     goToDetailForm(pcode: string, route: string) {
       this.dialog.closeAll();  // Close modal if open
       if (route === 'Supplier') {
-        this.router.navigate(['payables/supplier/detail', pcode]);
+        this.router.navigate(['supply-chain/supplier/detail', pcode]);
       } else if (route === 'contact') {
-        this.router.navigate(['payables/contact/detail', pcode]);
+        this.router.navigate(['supply-chain/contact/detail', pcode]);
       }
     }
   

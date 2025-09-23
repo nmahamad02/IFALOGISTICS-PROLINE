@@ -351,9 +351,9 @@ export class CustomerDetailComponent {
   goToDetailForm(pcode: string, route: string) {
     this.dialog.closeAll();  // Close modal if open
     if (route === 'customer') {
-      this.router.navigate(['receivables/customer/detail', pcode]);
+      this.router.navigate(['crm/customer/detail', pcode]);
     } else if (route === 'contact') {
-      this.router.navigate(['receivables/contact/detail', pcode]);
+      this.router.navigate(['crm/contact/detail', pcode]);
     }
   }
 

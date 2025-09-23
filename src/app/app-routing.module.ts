@@ -29,11 +29,11 @@ const routes: Routes = [
     loadChildren: () => import('./modules/finance/finance.module').then(m => m.FinanceModule)
   },
   {
-    path: 'payables',
+    path: 'supply-chain',
     loadChildren: () => import('./modules/payables/payables.module').then(m => m.PayablesModule)
   },
   {
-    path: 'receivables',
+    path: 'crm',
     loadChildren: () => import('./modules/receivables/receivables.module').then(m => m.ReceivablesModule)
   },
   {

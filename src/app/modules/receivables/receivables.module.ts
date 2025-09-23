@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CustomerMasterComponent } from './customer-component/customer-master/customer-master.component';
 import { CustomerDetailComponent } from './customer-component/customer-detail/customer-detail.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -29,10 +28,6 @@ import { ReportsComponent } from './reports-component/reports/reports.component'
 
 export const receivablesRoutes = [
   {
-    path: 'customer-master',
-    component: CustomerMasterComponent
-  } ,
-  {
     path: 'customer/detail/:pcode',
     component: CustomerDetailComponent
   },
@@ -56,7 +51,6 @@ export const receivablesRoutes = [
 
 @NgModule({
   declarations: [
-    CustomerMasterComponent,
     CustomerDetailComponent,
     ReceiptVoucherDetailComponent,
     ReceiptVoucherListComponent,
