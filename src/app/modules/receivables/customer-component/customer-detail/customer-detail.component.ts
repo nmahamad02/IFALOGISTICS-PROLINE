@@ -32,6 +32,11 @@ export class CustomerDetailComponent {
   @ViewChild('customerLookupDialog', { static: false }) customerLookupDialog!: TemplateRef<any>;
   @ViewChild('soaLookupDialog', { static: false }) soaLookupDialog!: TemplateRef<any>;
 
+
+  isEditMode = false;       // for customer header
+  contactEditIndex: number | null = null; // for contact cards
+
+
   titleList: any[] = []
   branchList: any[] = []
   accCategoryList: any[] = []
@@ -97,7 +102,7 @@ export class CustomerDetailComponent {
     }, (error: any) => {
       console.log(error);
     });
-    /*const contact = new FormGroup({
+    const contact = new FormGroup({
       contactId: new FormControl('', [ Validators.required]),
       contactPerson: new FormControl('', [ Validators.required]),
       contactMobile: new FormControl('', [ Validators.required]),
@@ -108,7 +113,7 @@ export class CustomerDetailComponent {
       contactAddress2: new FormControl('', [ Validators.required]),
       contactAddress3: new FormControl('', [ Validators.required]),
     });
-    this.contacts.push(contact);*/
+    this.contacts.push(contact);
     this.accountService.getTitle().subscribe((res: any) => {
       console.log(res)
       this.titleList = res.recordset
@@ -172,6 +177,9 @@ export class CustomerDetailComponent {
   }
 
   newForm(){
+    this.isEditMode = true;
+    this.contactEditIndex = 0; // first contact card editable by default
+
     this.custForm = new FormGroup({
       pcode: new FormControl(this.glCode, [ Validators.required]),
       title: new FormControl('', [ Validators.required]),
@@ -197,7 +205,7 @@ export class CustomerDetailComponent {
       industry: new FormControl('', [ Validators.required]),
       contacts: new FormArray([]),
     });
-    /*const contact = new FormGroup({
+    const contact = new FormGroup({
       contactId: new FormControl('', [ Validators.required]),
       contactPerson: new FormControl('', [ Validators.required]),
       contactMobile: new FormControl('', [ Validators.required]),
@@ -208,7 +216,7 @@ export class CustomerDetailComponent {
       contactAddress2: new FormControl('', [ Validators.required]),
       contactAddress3: new FormControl('', [ Validators.required]),
     });
-    this.contacts.push(contact);*/
+    this.contacts.push(contact);
   }
 
   copyToContact(){
@@ -357,10 +365,29 @@ export class CustomerDetailComponent {
     }
   }
 
+  toggleEdit() {
+    this.isEditMode = !this.isEditMode;
+  }
+
+  editContact(index: number) {
+    this.contactEditIndex = index;
+  }
+
+  saveContact(index: number) {
+    // You can persist this.contacts.at(index).value here
+    this.contactEditIndex = null;
+  }
+
   submitForm() {
-    const data = this.custForm.value
+
+    if (this.custForm.valid) {
+      console.log(this.custForm.value);
+      // Call your API to save
+      this.isEditMode = !this.isEditMode;
+      const data = this.custForm.value
     console.log(data)
-    this.accountService.getOpbal(this.currentYear.toString(), data.pcode).subscribe((res: any) => {
+    
+    /*this.accountService.getOpbal(this.currentYear.toString(), data.pcode).subscribe((res: any) => {
       if(res.recordset.length === 0) {
         /////INSERT
         this.accountService.postOpbal(data.pcode, data.title, data.custName, 'C', data.custAdd1, data.custAdd2, data.custAdd3, data.custPhone1, data.custPhone2, data.custEmail, data.mobile, this.glCode, data.custStatus, data.remarks, data.custTaxNo, data.custBranch, data.custAccountType, data.custAccountCategory, data.custCR,this.currentYear.toString(),data.opbal).subscribe(() => {
@@ -392,7 +419,8 @@ export class CustomerDetailComponent {
           alert(`Error: Could not insert customer.`);
         }
       );
-    })
+    })*/
+    }
   }
 
   getCustomerSoa(){

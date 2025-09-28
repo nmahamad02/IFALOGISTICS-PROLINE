@@ -3,39 +3,44 @@
         <div class="visualization-heading col-12">
             <div class="heading-info">
                 <div class="row">
-                    <div class="col-9">                
+                    <div class="col-6">                
                         <h3 class="heading-title">Customer Master</h3>
                     </div>
-                    <div class="col-3">
+                    <div class="col-6">
                         <div class="row">
                             <div class="col">
-                                <button class="btn-primary text-white btn btn-block btn-sm"  title="New Customer" style="float: right" (click)="goToDetailForm('new','customer')">
-                                    <mat-icon>add</mat-icon> <!--New Customer-->
+                                <button class="btn-primary text-white btn   btn-sm"  title="New Customer" style="float: right" (click)="goToDetailForm('new','customer')">
+                                    <mat-icon>add</mat-icon> New
                                 </button>
                             </div>
+                           <!--- <div class="col">
+                                <button class="btn-danger text-white btn   btn-sm"  title="Search Customer" style="float: right" (click)="searchCustomer()">
+                                    <mat-icon>search</mat-icon> Search 
+                                </button>
+                            </div> -->
                             <div class="col">
-                                <button class="btn-danger text-white btn btn-block btn-sm"  title="Search Customer" style="float: right" (click)="searchCustomer()">
-                                    <mat-icon>search</mat-icon> <!--Search Customer-->
+                                <button class="btn-info text-white btn   btn-sm"  title="Print Customer Statement of Account" style="float: right" (click)="getCustomerSoa()">
+                                    <mat-icon>print</mat-icon> Print SoA
                                 </button>
-                            </div>
+                            </div> 
                             <div class="col">
-                                <button class="btn-info text-white btn btn-block btn-sm"  title="Print Customer Statement of Account" style="float: right" (click)="getCustomerSoa()">
-                                    <mat-icon>print</mat-icon> <!--Print Customer Statement of Account-->
+                                <button class="btn-danger text-white btn   btn-sm"  title="Add Contact" style="float: right" (click)="addContact()">
+                                    <mat-icon>add</mat-icon> Add Contact
                                 </button>
                             </div>
+                            
                             <!--<div class="col">
-                                <button class="btn-dark text-white btn btn-block btn-sm"  title="Copy to Contact" style="float: right" (click)="copyToContact()">
+                                <button class="btn-dark text-white btn   btn-sm"  title="Copy to Contact" style="float: right" (click)="copyToContact()">
                                     <mat-icon>play_for_work</mat-icon> Copy to Contact
                                 </button>
                             </div>-->
-                            <!--<div class="col">
-                                <button class="btn-success text-white btn btn-block btn-sm"  title="Submit Customer" style="float: right"  (click)="submitForm()">
-                                    <mat-icon>note_add</mat-icon>  Submit Customer ['/receivables/customer-master']
-                                </button>
-                            </div>-->
                             <div class="col">
-                                <button class="btn-warning text-white btn btn-block btn-sm" [routerLink]="['/finance/general-ledger']" title="Return to Customer List" style="float: right">
-                                    <mat-icon>arrow_back</mat-icon> <!--Return to List-->
+                                <button *ngIf="!isEditMode" class="btn-warning text-white btn btn-sm" (click)="toggleEdit()">
+                                    <mat-icon>edit</mat-icon> Edit
+                                </button>
+
+                                <button *ngIf="isEditMode" class="btn-success text-white btn btn-sm" (click)="submitForm()">
+                                    <mat-icon>save</mat-icon> Submit
                                 </button>
                             </div>
                         </div>
@@ -70,79 +75,80 @@
                     </div>
                     <div class="col-8">
                         <form [formGroup]="custForm" class="form-container">
+                            <p>Customer Details</p>
                             <div class="row">
                                 <div class="col-2">
                                     <mat-label >Customer Code </mat-label>
-                                    <input  matInput class="form-control form-control-sm" #pcode formControlName="pcode" readonly >
+                                    <input  matInput class="form-control form-control-sm" #pcode formControlName="pcode"  [readonly]="!isEditMode" >
                                 </div>
                                 <div class="col-8">
                                     <mat-label >Name</mat-label>
-                                    <input formControlName="custName"  matInput class="form-control form-control-sm" readonly>
+                                    <input formControlName="custName"  matInput class="form-control form-control-sm"  [readonly]="!isEditMode">
                                 </div>
                                 <div class="col-2">
                                     <mat-label >Active</mat-label>
-                                    <mat-select class="form-control form-control-sm" formControlName="custStatus" readonly>
+                                    <mat-select class="form-control form-control-sm" formControlName="custStatus">
                                         <mat-option value="A">True</mat-option>
                                         <mat-option value="I">False</mat-option>
                                     </mat-select>
                                 </div>
                             </div>
-                            <div class="row">
+                            <!--<div class="row">
                                 <div class="col-3">
                                     <mat-label>Divison</mat-label>
-                                    <input formControlName="division"  matInput class="form-control form-control-sm" readonly>
+                                    <input formControlName="division"  matInput class="form-control form-control-sm"  [readonly]="!isEditMode">
                                 </div>
                                 <div class="col-3">
                                     <mat-label>Sales Category</mat-label>
-                                    <input formControlName="salesCat"  matInput class="form-control form-control-sm" readonly>
+                                    <input formControlName="salesCat"  matInput class="form-control form-control-sm"  [readonly]="!isEditMode">
                                 </div>
                                 <div class="col-3">
                                     <mat-label>Organisation</mat-label>
-                                    <input formControlName="organisation"  matInput class="form-control form-control-sm" readonly>
+                                    <input formControlName="organisation"  matInput class="form-control form-control-sm"  [readonly]="!isEditMode">
                                 </div>
                                 <div class="col-3">
                                     <mat-label>Industry</mat-label>
-                                    <input formControlName="industry"  matInput class="form-control form-control-sm" readonly>
+                                    <input formControlName="industry"  matInput class="form-control form-control-sm"  [readonly]="!isEditMode">
                                 </div>
-                            </div>
+                            </div>-->
                             <div class="row">
                                 <div class="col">
                                     <mat-label>Tax Number</mat-label>
-                                    <input formControlName="custTaxNo"  matInput class="form-control form-control-sm" readonly>
+                                    <input formControlName="custTaxNo"  matInput class="form-control form-control-sm"  [readonly]="!isEditMode">
                                 </div>
                                 <div class="col">
                                     <mat-label>National ID</mat-label>
-                                    <input formControlName="custCR"  matInput class="form-control form-control-sm" readonly>
+                                    <input formControlName="custCR"  matInput class="form-control form-control-sm"  [readonly]="!isEditMode">
                                 </div>
                                 <div class="col">
                                     <mat-label>Branch</mat-label>
-                                    <input formControlName="custBranch"  matInput class="form-control form-control-sm" readonly>
+                                    <input formControlName="custBranch"  matInput class="form-control form-control-sm"  [readonly]="!isEditMode">
                                 </div>
                                 <div class="col">
                                     <mat-label>Account Type</mat-label>
-                                    <input formControlName="custAccountType"  matInput class="form-control form-control-sm" readonly>
+                                    <input formControlName="custAccountType"  matInput class="form-control form-control-sm"  [readonly]="!isEditMode">
                                 </div>
                                 <div class="col">
                                     <mat-label>Account Category</mat-label>
-                                    <input formControlName="custAccountCategory"  matInput class="form-control form-control-sm" readonly>
+                                    <input formControlName="custAccountCategory"  matInput class="form-control form-control-sm"  [readonly]="!isEditMode">
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-3">
                                     <mat-label>Phone 1</mat-label>
-                                    <input formControlName="custPhone1"  matInput class="form-control form-control-sm" readonly>
+                                    <input formControlName="custPhone1"  matInput class="form-control form-control-sm"  [readonly]="!isEditMode">
                                 </div>
                                 <div class="col-3">
                                     <mat-label>Phone 2</mat-label>
-                                    <input formControlName="custPhone2"  matInput class="form-control form-control-sm" readonly>
+                                    <input formControlName="custPhone2"  matInput class="form-control form-control-sm"  [readonly]="!isEditMode">
                                 </div>
                                 <div class="col-3">
                                     <mat-label>Mobile</mat-label>
-                                    <input formControlName="mobile"  matInput class="form-control form-control-sm" readonly>
+                                    <input formControlName="mobile"  matInput class="form-control form-control-sm"  [readonly]="!isEditMode">
                                 </div>
                                 <div class="col-3">
                                     <mat-label>Email</mat-label>
-                                    <input formControlName="custEmail"  matInput class="form-control form-control-sm" readonly>
+                                    <input formControlName="custEmail"  matInput class="form-control form-control-sm"  [readonly]="!isEditMode">
                                 </div>
                             </div>
                             <div class="row">
@@ -161,16 +167,26 @@
                             </div>
                             <div class="row">
                                 <div class="col-4">
-                                    <mat-label>Opening Balance (KWD)</mat-label>
+                                    <mat-label>Opening Balance (AED)</mat-label>
                                     <input formControlName="opbal" matInput class="form-control form-control-sm">                                
                                 </div>
-                                <div class="col-8">
+                                <div class="col-4">
+                                    <mat-label>Credit Limit (AED)</mat-label>
+                                    <input formControlName="crlimit" matInput class="form-control form-control-sm">                                
+                                </div>
+                                <div class="col-4">
+                                    <mat-label>Credit Period</mat-label>
+                                    <input formControlName="crperiod" matInput class="form-control form-control-sm">                                
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
                                     <mat-label>Remarks</mat-label>
                                     <input formControlName="remarks"  matInput class="form-control form-control-sm">
                                 </div>
                             </div>
-                            <hr>
-                            <!--<mat-tab-group>
+                            <hr><!----
+                            <mat-tab-group>
                                 <mat-tab label="Contact Details">
                                     <br>
                                     <table class="table table-hover table-responsive-xxl" formArrayName="contacts">
@@ -203,29 +219,29 @@
                                         <tbody>
                                             <tr #depMem *ngFor="let con of contacts.controls; let i = index;" [formGroupName]="i">
                                                 <td>
-                                                    <input #partyid class="form-control form-control-sm" type="text" formControlName="contactId" readonly>
+                                                    <input #partyid class="form-control form-control-sm" type="text" formControlName="contactId"  [readonly]="!isEditMode">
                                                 </td>
                                                 <td>
-                                                    <input class="form-control form-control-sm" type="text" formControlName="contactPerson" readonly>
+                                                    <input class="form-control form-control-sm" type="text" formControlName="contactPerson"  [readonly]="!isEditMode">
                                                 </td>
                                                 <td>
-                                                    <input class="form-control form-control-sm" type="text" formControlName="contactAddress1" readonly>
+                                                    <input class="form-control form-control-sm" type="text" formControlName="contactAddress1"  [readonly]="!isEditMode">
                                                 </td>
                                                 <td>
-                                                    <input class="form-control form-control-sm" type="text" formControlName="contactAddress2" readonly>
+                                                    <input class="form-control form-control-sm" type="text" formControlName="contactAddress2"  [readonly]="!isEditMode">
                                                 </td>
                                                 <td>
-                                                    <input class="form-control form-control-sm" type="text" formControlName="contactAddress3" readonly>
+                                                    <input class="form-control form-control-sm" type="text" formControlName="contactAddress3"  [readonly]="!isEditMode">
                                                 </td>
                                                 <td>
-                                                    <input class="form-control form-control-sm" type="text" formControlName="contactMobile" readonly>
+                                                    <input class="form-control form-control-sm" type="text" formControlName="contactMobile"  [readonly]="!isEditMode">
                                                 </td>
                                                 <td>
-                                                    <input class="form-control form-control-sm" type="text" formControlName="contactEmail" readonly>
+                                                    <input class="form-control form-control-sm" type="text" formControlName="contactEmail"  [readonly]="!isEditMode">
                                                 </td>
                                                 <td>
                                                     <button class="btn btn-danger" type="button" (click)="deleteContact(i)"> &#10005; </button>
-                                                    <button mat-raised-button class="bg-warning text-white btn btn-block" (click)="goToDetailForm(partyid.value,'contact')">
+                                                    <button mat-raised-button class="bg-warning text-white btn  " (click)="goToDetailForm(partyid.value,'contact')">
                                                         <mat-icon>arrow_forward</mat-icon>                                            
                                                     </button>
                                                 </td>
@@ -234,7 +250,69 @@
                                     </table>
                                     <button class="btn btn-success" type="button" (click)="addContact()"> &#43; </button>
                                 </mat-tab>
-                            </mat-tab-group>-->
+                            </mat-tab-group>
+                        -->
+                            <div formArrayName="contacts" class="row">
+                                <div class="col-6" *ngFor="let con of contacts.controls; let i = index" [formGroupName]="i">
+                                    <mat-card class="bg-secondary">
+                                        <mat-card-content>
+                                            <div class="row">
+                                                <div class="col-8">
+                                                    <p>Contact Details</p>
+                                                </div>
+                                                <div class="col-2">
+                                                    <button *ngIf="contactEditIndex !== i" class="btn-warning btn-sm" (click)="editContact(i)">
+                                                        <mat-icon>edit</mat-icon>
+                                                    </button>
+                                                    <button *ngIf="contactEditIndex === i" class="btn-success btn-sm" (click)="saveContact(i)">
+                                                        <mat-icon>save</mat-icon>
+                                                    </button>
+                                                </div>
+                                                <div class="col-2">
+                                                    <button class="btn btn-danger btn-sm" style="float: right" type="button" (click)="deleteContact(i)">
+                                                        <mat-icon>delete</mat-icon>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-4">
+                                                    <mat-label >Contact ID </mat-label>
+                                                    <input  matInput class="form-control 
+                                                    form-control-sm" formControlName="contactId" [readonly]="contactEditIndex !== i" >
+                                                </div>
+                                                <div class="col-8">
+                                                    <mat-label >Name</mat-label>
+                                                    <input formControlName="contactPerson"  matInput class="form-control form-control-sm" [readonly]="contactEditIndex !== i">
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-4">
+                                                    <mat-label>Address Line 1</mat-label>
+                                                    <input formControlName="contactAddress1"  matInput class="form-control form-control-sm" [readonly]="contactEditIndex !== i">
+                                                </div>
+                                                <div class="col-4">
+                                                    <mat-label>Address Line 2</mat-label>
+                                                    <input formControlName="contactAddress2"  matInput class="form-control form-control-sm" [readonly]="contactEditIndex !== i">
+                                                </div>
+                                                <div class="col-4">
+                                                    <mat-label>Address Line 3</mat-label>
+                                                    <input formControlName="contactAddress3"  matInput class="form-control form-control-sm" [readonly]="contactEditIndex !== i">
+                                                </div>
+                                            </div>
+                                             <div class="row">
+                                                <div class="col-6">
+                                                    <mat-label>Mobile</mat-label>
+                                                    <input formControlName="contactMobile"  matInput class="form-control form-control-sm" [readonly]="contactEditIndex !== i">
+                                                </div>
+                                                <div class="col-6">
+                                                    <mat-label>Email</mat-label>
+                                                    <input formControlName="contactEmail"  matInput class="form-control form-control-sm" [readonly]="contactEditIndex !== i">
+                                                </div>
+                                            </div>
+                                        </mat-card-content>
+                                    </mat-card>
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div> 
@@ -281,7 +359,7 @@
                     <td>{{cust.MOBILE}}</td>
                     <td>{{cust.EMAIL}}</td>
                     <td>
-                        <button mat-raised-button class="bg-warning text-white btn btn-block" (click)="goToDetailForm(cust.PCODE,'customer')">
+                        <button mat-raised-button class="bg-warning text-white btn  " (click)="goToDetailForm(cust.PCODE,'customer')">
                             <mat-icon>arrow_forward</mat-icon>                                            
                         </button>
                     </td>
@@ -401,12 +479,12 @@
     <div class="row container-fluid">
         <div class="col-8"></div>
         <!---- <div class="col-3">
-            <button mat-raised-button class="bg-primary text-white btn btn-block" (click)="printCOA('S')" style="float: right" title="print">
+            <button mat-raised-button class="bg-primary text-white btn  " (click)="printCOA('S')" style="float: right" title="print">
                 Print Statement Summary
             </button>
         </div>-->
         <div class="col-4">
-            <button mat-raised-button class="bg-success text-white btn btn-block" (click)="printCOA()" style="float: right" title="print">
+            <button mat-raised-button class="bg-success text-white btn  " (click)="printCOA()" style="float: right" title="print">
                 Print Statement Summary
             </button>
         </div>
