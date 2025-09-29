@@ -10,7 +10,7 @@
                         <div class="row">
                             <div class="col">
                                 <button class="btn-primary text-white btn   btn-sm"  title="New Customer" style="float: right" (click)="goToDetailForm('new','customer')">
-                                    <mat-icon>add</mat-icon> New
+                                    <mat-icon>add</mat-icon> New Customer
                                 </button>
                             </div>
                            <!--- <div class="col">
@@ -25,7 +25,7 @@
                             </div> 
                             <div class="col">
                                 <button class="btn-danger text-white btn   btn-sm"  title="Add Contact" style="float: right" (click)="addContact()">
-                                    <mat-icon>add</mat-icon> Add Contact
+                                    <mat-icon>person</mat-icon> Add Contact
                                 </button>
                             </div>
                             
@@ -36,11 +36,11 @@
                             </div>-->
                             <div class="col">
                                 <button *ngIf="!isEditMode" class="btn-warning text-white btn btn-sm" (click)="toggleEdit()">
-                                    <mat-icon>edit</mat-icon> Edit
+                                    <mat-icon>edit</mat-icon> Edit Customer
                                 </button>
 
                                 <button *ngIf="isEditMode" class="btn-success text-white btn btn-sm" (click)="submitForm()">
-                                    <mat-icon>save</mat-icon> Submit
+                                    <mat-icon>save</mat-icon> Submit Customer
                                 </button>
                             </div>
                         </div>
@@ -61,7 +61,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let cust of (customerList | filterTable:searchText| slice:0:5); let i = index;">
+                                <tr *ngFor="let cust of (customerList | filterTable:searchText| slice:0:10); let i = index;">
                                     <td>{{ cust.PCODE }}</td>
                                     <td>{{ cust.CUST_NAME }}</td>
                                     <td>
@@ -93,24 +93,6 @@
                                     </mat-select>
                                 </div>
                             </div>
-                            <!--<div class="row">
-                                <div class="col-3">
-                                    <mat-label>Divison</mat-label>
-                                    <input formControlName="division"  matInput class="form-control form-control-sm"  [readonly]="!isEditMode">
-                                </div>
-                                <div class="col-3">
-                                    <mat-label>Sales Category</mat-label>
-                                    <input formControlName="salesCat"  matInput class="form-control form-control-sm"  [readonly]="!isEditMode">
-                                </div>
-                                <div class="col-3">
-                                    <mat-label>Organisation</mat-label>
-                                    <input formControlName="organisation"  matInput class="form-control form-control-sm"  [readonly]="!isEditMode">
-                                </div>
-                                <div class="col-3">
-                                    <mat-label>Industry</mat-label>
-                                    <input formControlName="industry"  matInput class="form-control form-control-sm"  [readonly]="!isEditMode">
-                                </div>
-                            </div>-->
                             <div class="row">
                                 <div class="col">
                                     <mat-label>Tax Number</mat-label>
@@ -185,73 +167,7 @@
                                     <input formControlName="remarks"  matInput class="form-control form-control-sm">
                                 </div>
                             </div>
-                            <hr><!----
-                            <mat-tab-group>
-                                <mat-tab label="Contact Details">
-                                    <br>
-                                    <table class="table table-hover table-responsive-xxl" formArrayName="contacts">
-                                        <thead style="background-color: rgb(0, 0, 0) !important; color: white;">
-                                            <tr class="table-reflow" >
-                                                <th style="width: 15%;">
-                                                    Contact ID
-                                                </th>
-                                                <th style="width: 25%;">
-                                                    Contact Name
-                                                </th>
-                                                <th style="width: 11%;">
-                                                    Address Line 1
-                                                </th>
-                                                <th style="width: 11%;">
-                                                    Address Line 2
-                                                </th>
-                                                <th style="width: 11%;">
-                                                    Address Line 3
-                                                </th>
-                                                <th style="width: 11%;">
-                                                    Mobile
-                                                </th>
-                                                <th style="width: 11%;">
-                                                    Email
-                                                </th>
-                                                <th style="width: 5%;"> </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr #depMem *ngFor="let con of contacts.controls; let i = index;" [formGroupName]="i">
-                                                <td>
-                                                    <input #partyid class="form-control form-control-sm" type="text" formControlName="contactId"  [readonly]="!isEditMode">
-                                                </td>
-                                                <td>
-                                                    <input class="form-control form-control-sm" type="text" formControlName="contactPerson"  [readonly]="!isEditMode">
-                                                </td>
-                                                <td>
-                                                    <input class="form-control form-control-sm" type="text" formControlName="contactAddress1"  [readonly]="!isEditMode">
-                                                </td>
-                                                <td>
-                                                    <input class="form-control form-control-sm" type="text" formControlName="contactAddress2"  [readonly]="!isEditMode">
-                                                </td>
-                                                <td>
-                                                    <input class="form-control form-control-sm" type="text" formControlName="contactAddress3"  [readonly]="!isEditMode">
-                                                </td>
-                                                <td>
-                                                    <input class="form-control form-control-sm" type="text" formControlName="contactMobile"  [readonly]="!isEditMode">
-                                                </td>
-                                                <td>
-                                                    <input class="form-control form-control-sm" type="text" formControlName="contactEmail"  [readonly]="!isEditMode">
-                                                </td>
-                                                <td>
-                                                    <button class="btn btn-danger" type="button" (click)="deleteContact(i)"> &#10005; </button>
-                                                    <button mat-raised-button class="bg-warning text-white btn  " (click)="goToDetailForm(partyid.value,'contact')">
-                                                        <mat-icon>arrow_forward</mat-icon>                                            
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    <button class="btn btn-success" type="button" (click)="addContact()"> &#43; </button>
-                                </mat-tab>
-                            </mat-tab-group>
-                        -->
+                            <hr>
                             <div formArrayName="contacts" class="row">
                                 <div class="col-6" *ngFor="let con of contacts.controls; let i = index" [formGroupName]="i">
                                     <mat-card class="bg-secondary">
@@ -261,15 +177,15 @@
                                                     <p>Contact Details</p>
                                                 </div>
                                                 <div class="col-2">
-                                                    <button *ngIf="contactEditIndex !== i" class="btn-warning btn-sm" (click)="editContact(i)">
+                                                    <button *ngIf="contactEditIndex !== i" class="btn-warning text-white btn btn-sm" (click)="editContact(i)">
                                                         <mat-icon>edit</mat-icon>
                                                     </button>
-                                                    <button *ngIf="contactEditIndex === i" class="btn-success btn-sm" (click)="saveContact(i)">
+                                                    <button *ngIf="contactEditIndex === i" class="btn-success text-white btn btn-sm" (click)="saveContact(i)">
                                                         <mat-icon>save</mat-icon>
                                                     </button>
                                                 </div>
                                                 <div class="col-2">
-                                                    <button class="btn btn-danger btn-sm" style="float: right" type="button" (click)="deleteContact(i)">
+                                                    <button class="btn-danger text-white btn btn-sm" style="float: right" type="button" (click)="deleteContact(i)">
                                                         <mat-icon>delete</mat-icon>
                                                     </button>
                                                 </div>

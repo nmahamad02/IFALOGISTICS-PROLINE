@@ -36,7 +36,6 @@ export class CustomerDetailComponent {
   isEditMode = false;       // for customer header
   contactEditIndex: number | null = null; // for contact cards
 
-
   titleList: any[] = []
   branchList: any[] = []
   accCategoryList: any[] = []
@@ -142,9 +141,9 @@ export class CustomerDetailComponent {
   }
 
   addContact() {
-    const index = this.contacts.length + 1;
+    this.contactEditIndex = this.contacts.length
     const contact = new FormGroup({
-      contactId: new FormControl('', [ Validators.required]),
+      contactId: new FormControl('***NEW***', [ Validators.required]),
       contactPerson: new FormControl('', [ Validators.required]),
       contactMobile: new FormControl('', [ Validators.required]),
       contactPhone1: new FormControl('', [ Validators.required]),
@@ -161,8 +160,11 @@ export class CustomerDetailComponent {
     // Show confirmation alert
     if (confirm("Are you sure you want to delete this contact?")) {
       console.log(this.contacts.at(index));
-  
-      // Call deleteParty function
+
+      if(this.contacts.at(index).value.contactId === '***NEW***'){  
+        this.contacts.removeAt(index)
+      } else {
+        // Call deleteParty function
       this.accountService.deleteParty(this.contacts.at(index).value.contactId).subscribe(
         (response) => {
           alert("Contact deleted successfully!"); // Success alert
@@ -173,6 +175,7 @@ export class CustomerDetailComponent {
           alert("Failed to delete contact. Please try again.");
         }
       );
+      }
     }
   }
 
@@ -216,7 +219,7 @@ export class CustomerDetailComponent {
       contactAddress2: new FormControl('', [ Validators.required]),
       contactAddress3: new FormControl('', [ Validators.required]),
     });
-    this.contacts.push(contact);
+    //this.contacts.push(contact);
   }
 
   copyToContact(){
@@ -305,6 +308,8 @@ export class CustomerDetailComponent {
   }
 
   getDetails(pcode: string) {
+    this.isEditMode = false;
+    this.contactEditIndex = null;
     this.accountService.getOpbal(this.currentYear.toString(), pcode).subscribe((res: any) => {
       console.log(res)
       this.custForm = new FormGroup({
@@ -374,53 +379,47 @@ export class CustomerDetailComponent {
   }
 
   saveContact(index: number) {
+    const data = this.custForm.value
     // You can persist this.contacts.at(index).value here
     this.contactEditIndex = null;
+    console.log(this.contacts.at(index).value)
+    if(this.contacts.at(index).value.contactId === '***NEW***'){
+      this.accountService.getPartyIdMax().subscribe((res: any) => {
+        let newPartyId = res.recordset.PARTYID
+        this.accountService.upsertParty(data.pcode,newPartyId,this.contacts.at(index).value.contactPerson,'C',this.contacts.at(index).value.contactAddress1,this.contacts.at(index).value.contactAddress2,this.contacts.at(index).value.contactAddress3,this.contacts.at(index).value.contactPhone1,this.contacts.at(index).value.contactPhone2,this.contacts.at(index).value.contactEmail,this.contacts.at(index).value.contactMobile).subscribe(() => {
+          alert(`Contact details successfully updated!`);
+          this.isEditMode = !this.isEditMode;
+          this.goToDetailForm(data.pcode,'customer'); // Navigate to detail page
+        },(error) => {
+          console.error(`Failed to update Contact:`, error);
+          alert(`Error: Could not upadte Contact.`);
+        })
+      })
+    } else {
+      this.accountService.upsertParty(data.pcode,this.contacts.at(index).value.contactId,this.contacts.at(index).value.contactPerson,'C',this.contacts.at(index).value.contactAddress1,this.contacts.at(index).value.contactAddress2,this.contacts.at(index).value.contactAddress3,this.contacts.at(index).value.contactPhone1,this.contacts.at(index).value.contactPhone2,this.contacts.at(index).value.contactEmail,this.contacts.at(index).value.contactMobile).subscribe(() => {
+        alert(`Contact details successfully updated!`);
+        this.isEditMode = !this.isEditMode;
+        this.goToDetailForm(data.pcode,'customer'); // Navigate to detail page
+      },(error) => {
+        console.error(`Failed to update Contact:`, error);
+        alert(`Error: Could not upadte Contact.`);
+      })
+    }
   }
 
   submitForm() {
-
-    if (this.custForm.valid) {
-      console.log(this.custForm.value);
-      // Call your API to save
-      this.isEditMode = !this.isEditMode;
-      const data = this.custForm.value
+    console.log(this.custForm.value);
+    // Call your API to save
+    const data = this.custForm.value
     console.log(data)
-    
-    /*this.accountService.getOpbal(this.currentYear.toString(), data.pcode).subscribe((res: any) => {
-      if(res.recordset.length === 0) {
-        /////INSERT
-        this.accountService.postOpbal(data.pcode, data.title, data.custName, 'C', data.custAdd1, data.custAdd2, data.custAdd3, data.custPhone1, data.custPhone2, data.custEmail, data.mobile, this.glCode, data.custStatus, data.remarks, data.custTaxNo, data.custBranch, data.custAccountType, data.custAccountCategory, data.custCR,this.currentYear.toString(),data.opbal).subscribe(() => {
-          alert(`Customer successfully inserted!`);
-            this.goToDetailForm(data.pcode,'customer'); // Navigate to detail page
-          },(error) => {
-            console.error(`Failed to insert customer:`, error);
-            alert(`Error: Could not insert customer.`);
-          }
-        );
-      } else {
-        /////UPDATE
-        this.accountService.updateOpbal(data.pcode, data.title, data.custName, 'C', data.custAdd1, data.custAdd2, data.custAdd3, data.custPhone1, data.custPhone2, data.custEmail, data.mobile, this.glCode, data.custStatus, data.remarks, data.custTaxNo, data.custBranch, data.custAccountType, data.custAccountCategory, data.custCR,this.currentYear.toString(),data.opbal).subscribe(() => {
-          alert(`Customer successfully updated!`);
-            this.goToDetailForm(data.pcode,'customer'); // Navigate to detail page
-          },(error) => {
-            console.error(`Failed to update customer:`, error);
-            alert(`Error: Could not update customer.`);
-          }
-        );
-      }
-    }, (err: any) => {
-      /////INSERT
-      this.accountService.postOpbal(data.pcode, data.title, data.custName, 'C', data.custAdd1, data.custAdd2, data.custAdd3, data.custPhone1, data.custPhone2, data.custEmail, data.mobile, this.glCode, data.custStatus, data.remarks, data.custTaxNo, data.custBranch, data.custAccountType, data.custAccountCategory, data.custCR,this.currentYear.toString(),data.opbal).subscribe(() => {
-        alert(`Customer successfully inserted!`);
-          this.goToDetailForm(data.pcode,'customer'); // Navigate to detail page
-        },(error) => {
-          console.error(`Failed to insert customer:`, error);
-          alert(`Error: Could not insert customer.`);
-        }
-      );
-    })*/
-    }
+    this.accountService.upsertOpbal(data.pcode, data.title, data.custName, 'C', data.custAdd1, data.custAdd2, data.custAdd3, data.custPhone1, data.custPhone2, data.custEmail, data.mobile, this.glCode, data.custStatus, data.remarks, data.custTaxNo, data.custBranch, data.custAccountType, data.custAccountCategory, data.custCR,this.currentYear.toString(),data.opbal).subscribe(() => {
+      alert(`Customer details successfully updated!`);
+      this.isEditMode = !this.isEditMode;
+      this.goToDetailForm(data.pcode,'customer'); // Navigate to detail page
+    },(error) => {
+      console.error(`Failed to update customer:`, error);
+      alert(`Error: Could not update customer.`);
+    })
   }
 
   getCustomerSoa(){
